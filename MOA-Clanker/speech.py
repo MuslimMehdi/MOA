@@ -4,6 +4,9 @@ import wikipedia
 import webbrowser
 import os
 import pyjokes
+import googlesearch
+import beautifulsoup4
+
 
 def speak(text):
     print(f"Assistant: {text}")
@@ -22,7 +25,7 @@ def wish_user():
         speak("Good Afternoon!")
     else:
         speak("Good Evening!")
-    speak("I am your voice assistant. How can I help you today?")
+    speak("I am MOA Clanker. How can I help you today?")
 
 def take_command():
     return input("You (type your command): ").lower()
@@ -42,13 +45,20 @@ def run_assistant():
             except:
                 speak("Sorry, I couldn't find anything.")
 
-        elif 'open youtube' in query:
-            speak("Opening YouTube...")
-            webbrowser.open("https://www.youtube.com/")
+        elif 'open' in query:
+            query_list = query.split()
+            print("Opening " + query_list[1].capitalize(),"...")
+            try:
+                # Perform the Google search and get the first result
+                first_result = search("Google",query, num=1, stop=1, pause=2)
 
-        elif 'open google' in query:
-            speak("Opening Google...")
-            webbrowser.open("https://www.google.com/")
+                # Open the first result in a new browser tab
+                print(f"Opening the first search result for '{query}': {first_result}")
+                webbrowser.open_new_tab(first_result)
+
+            except StopIteration:
+                print(f"No search results found for '{query}'.")
+
 
         elif 'time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
